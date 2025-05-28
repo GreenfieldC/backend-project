@@ -28,17 +28,6 @@ export async function POST(req) {
   let user = await prisma.user.findUnique({
     where: { email: session.user.email },
   });
-  // Falls User existiert, aber noch keinen Namen hat → Name setzen
-  if (user && !user.name) {
-    user = await prisma.user.update({
-      where: { email: session.user.email },
-      data: {
-        name: data.name,
-        image: data.image || session.user.image,
-      },
-    });
-  }
-  // Falls User noch nicht existiert → anlegen
   if (!user) {
     user = await prisma.user.create({
       data: {

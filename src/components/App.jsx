@@ -1,6 +1,7 @@
 "use client";
 import { SessionProvider } from "next-auth/react";
 import { useEffect } from "react";
+import DarkModeAndAuthButtons from "./DarkModeAndAuthButtons";
 
 export default function App({ session, children }) {
   // Dark Mode Toggle
@@ -18,12 +19,9 @@ export default function App({ session, children }) {
 
   return (
     <SessionProvider session={session}>
-      <button
-        onClick={toggleDarkMode}
-        className="fixed top-4 right-4 z-50 px-3 py-1 rounded bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700 shadow"
-      >
-        Dark Mode wechseln
-      </button>
+      <div className="fixed top-4 right-4 z-50 flex gap-2">
+        <DarkModeAndAuthButtons />
+      </div>
       {children}
     </SessionProvider>
   );

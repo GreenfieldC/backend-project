@@ -20,57 +20,93 @@ export default function RecipeForm({ onSubmit }) {
     event.target.reset();
   };
   return (
-    <form onSubmit={submitRecipe}>
-      <div className="flex gap-4 justify-center items-center mb-6">
-        <label for="name">Name:</label>
-        <input id="name" name="name" placeholder="Banana Bread"></input>
+    <form onSubmit={submitRecipe} className="space-y-6 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
+        <label htmlFor="name" className="sm:col-span-1 text-right">
+          Name:
+        </label>
+        <input
+          id="name"
+          name="name"
+          placeholder="Banana Bread"
+          className="sm:col-span-3 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+        />
       </div>
-      <div className="flex gap-4 justify-center items-center mb-6">
-        <label for="steps">Steps:</label>
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
+        <label htmlFor="steps" className="sm:col-span-1 text-right">
+          Steps:
+        </label>
         <textarea
           id="steps"
           name="steps"
           placeholder="1. Eat banana bread"
+          className="sm:col-span-3 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300 min-h-[60px]"
         ></textarea>
       </div>
-      {[...Array(ingredientAmount).keys()].map((index) => {
-        return (
-          <fieldset
-            className="flex gap-4 justify-center items-center mb-6"
-            key={index}
-          >
-            <label for={`name-${index}`}>Ingredient Name:</label>
+      {[...Array(ingredientAmount).keys()].map((index) => (
+        <fieldset
+          className="grid col-span-2 sm:col-span-2 justify-between gap-4 items-center mb-2 border border-orange-100 dark:border-gray-700 rounded p-4 w-full"
+          key={index}
+        >
+          <div className="w-fit">
+            <label
+              htmlFor={`name-${index}`}
+              className="sm:col-span-1 text-right"
+            >
+              Ingredient Name:
+            </label>
             <input
               id={`name-${index}`}
               name={`name-${index}`}
               placeholder="Bananas"
-            ></input>
-            <label for={`amount-${index}`}>Ingredient Amount:</label>
+              className="sm:col-span-2 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+            />
+          </div>
+          <div className="w-fit">
+            <label
+              htmlFor={`amount-${index}`}
+              className="sm:col-span-1 text-right"
+            >
+              Amount:
+            </label>
             <input
               id={`amount-${index}`}
               type="number"
               name={`amount-${index}`}
               placeholder="6"
-            ></input>
-            <label for={`units-${index}`}>Ingredient Units:</label>
+              className="sm:col-span-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+            />
+          </div>
+          <div className="w-fit">
+            <label
+              htmlFor={`units-${index}`}
+              className="sm:col-span-1 text-right"
+            >
+              Units:
+            </label>
             <input
               id={`units-${index}`}
               name={`units-${index}`}
               placeholder="bunches"
-            ></input>
-          </fieldset>
-        );
-      })}
-      <button
-        className="group underline rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-        onClick={() => setIngredientAmount((amount) => amount + 1)}
-      >
-        Add Ingredient
-      </button>
-      <input
-        className="group underline rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-        type="submit"
-      />
+              className="sm:col-span-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+            />
+          </div>
+        </fieldset>
+      ))}
+      <div className="flex justify-end">
+        <button
+          type="button"
+          className="mr-4 group underline rounded-lg border border-transparent px-5 py-2 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
+          onClick={() => setIngredientAmount((amount) => amount + 1)}
+        >
+          Add Ingredient
+        </button>
+        <input
+          className="group underline rounded-lg border border-transparent px-5 py-2 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30 cursor-pointer"
+          type="submit"
+          value="Save Recipe"
+        />
+      </div>
     </form>
   );
 }

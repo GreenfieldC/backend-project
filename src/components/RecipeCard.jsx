@@ -27,7 +27,7 @@ export default function RecipeCard({ recipe }) {
       <ol className="list-decimal list-inside pl-4 space-y-1">
         {recipe.steps.map((step, stepIndex) => (
           <li key={stepIndex} className="text-gray-700 dark:text-gray-300">
-            {step}
+            {typeof step === "string" ? step : step.description}
           </li>
         ))}
       </ol>

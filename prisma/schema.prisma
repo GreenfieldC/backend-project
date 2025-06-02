@@ -56,3 +56,28 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Recipe {
+  id          String        @id @default(cuid())
+  name        String
+  ingredients Ingredient[]
+  steps       Step[]
+  createdAt   DateTime      @default(now())
+}
+
+model Ingredient {
+  id        String   @id @default(cuid())
+  name      String
+  amount    Float
+  units     String
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  String
+}
+
+model Step {
+  id        String   @id @default(cuid())
+  description String
+  order     Int
+  recipe    Recipe   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  String
+}

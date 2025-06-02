@@ -8,14 +8,14 @@ export default function RecipeForm({ onSubmit }) {
     console.log(Object.fromEntries(formData));
     onSubmit({
       name: formData.get("name"),
-      steps: formData.get("steps"),
-      ingredients: [...Array(ingredientAmount).keys()].map((index) => {
-        return {
-          name: formData.get(`name-${index}`),
-          amount: formData.get(`amount-${index}`),
-          units: formData.get(`units-${index}`),
-        };
-      }),
+      steps: formData.get("steps")
+        ? formData.get("steps").split("\n").filter(Boolean)
+        : [],
+      ingredients: [...Array(ingredientAmount).keys()].map((index) => ({
+        name: formData.get(`name-${index}`),
+        amount: parseFloat(formData.get(`amount-${index}`)),
+        units: formData.get(`units-${index}`),
+      })),
     });
     event.target.reset();
   };
@@ -29,7 +29,7 @@ export default function RecipeForm({ onSubmit }) {
           id="name"
           name="name"
           placeholder="Banana Bread"
-          className="sm:col-span-3 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+          className="sm:col-span-3 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
@@ -40,7 +40,7 @@ export default function RecipeForm({ onSubmit }) {
           id="steps"
           name="steps"
           placeholder="1. Eat banana bread"
-          className="sm:col-span-3 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300 min-h-[60px]"
+          className="sm:col-span-3 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300 min-h-[60px]"
         ></textarea>
       </div>
       {[...Array(ingredientAmount).keys()].map((index) => (
@@ -59,7 +59,7 @@ export default function RecipeForm({ onSubmit }) {
               id={`name-${index}`}
               name={`name-${index}`}
               placeholder="Bananas"
-              className="sm:col-span-2 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+              className="sm:col-span-2 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
             />
           </div>
           <div className="w-fit">
@@ -74,7 +74,7 @@ export default function RecipeForm({ onSubmit }) {
               type="number"
               name={`amount-${index}`}
               placeholder="6"
-              className="sm:col-span-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+              className="sm:col-span-1 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
             />
           </div>
           <div className="w-fit">
@@ -88,7 +88,7 @@ export default function RecipeForm({ onSubmit }) {
               id={`units-${index}`}
               name={`units-${index}`}
               placeholder="bunches"
-              className="sm:col-span-1 w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
+              className="sm:col-span-1 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
             />
           </div>
         </fieldset>

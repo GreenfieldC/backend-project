@@ -7,6 +7,12 @@ export default function Home() {
   const { data: session } = useSession();
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-white to-purple-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+      <Link
+        className="absolute top-4 left-4 bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded p-2 px-6 font-medium shadow hover:from-purple-700 hover:to-blue-600 transition-colors duration-300"
+        href="/register"
+      >
+        Register
+      </Link>
       <header className="flex flex-col items-center gap-4 mb-12">
         <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500 dark:from-blue-300 dark:to-purple-400 drop-shadow-lg">
           Recipe App!

@@ -1,36 +1,30 @@
 "use client";
 import RecipeForm from "@/components/RecipeForm";
-import { api } from "@/utils/api";
-import Link from "next/link";
-import { useState } from "react";
+//import { api } from "@/utils/api";
+//import Link from "next/link";
+import { useEffect, useState } from "react";
 import RecipeCard from "@/components/RecipeCard";
 
 export default function Recipes() {
-  const [recipes, setRecipes] = useState([
-    {
-      name: "Banana Bread",
-      ingredients: [{ name: "Bananas", amount: 6, units: "individual" }],
-      steps: ["Smush bananas", "2. Eat bread"],
-    },
-    {
-      name: "Banana Bread",
-      ingredients: [{ name: "Bananas", amount: 6, units: "individual" }],
-      steps: ["Smush bananas", "2. Eat bread"],
-    },
-    {
-      name: "Banana Bread",
-      ingredients: [{ name: "Bananas", amount: 6, units: "individual" }],
-      steps: ["Smush bananas", "2. Eat bread"],
-    },
-  ]);
+  const [recipes, setRecipes] = useState([]);
+  useEffect(() => {
+    loadData();
+  }, []);
   const loadData = () => {
-    fetch(`${api}/recipes`)
+    fetch("/api/recipe/load")
       .then((response) => response.json())
       .then((data) => setRecipes(data));
   };
-  let saveData = (data) => {
-    setRecipes((currentRecipes) => [...currentRecipes, data]);
+  let saveData = async (data) => {
+    await fetch("/api/recipe/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    loadData(); // Rezepte neu laden
   };
+
+  console.log("Rendering Recipes Page", recipes);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col items-center py-12 px-4">

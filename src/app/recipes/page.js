@@ -1,7 +1,5 @@
 "use client";
 import RecipeForm from "@/components/RecipeForm";
-//import { api } from "@/utils/api";
-//import Link from "next/link";
 import { useEffect, useState } from "react";
 import RecipeCard from "@/components/RecipeCard";
 
@@ -21,10 +19,28 @@ export default function Recipes() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    loadData(); // Rezepte neu laden
+    loadData();
   };
 
-  console.log("Rendering Recipes Page", recipes);
+  function deleteRecipe(id) {
+    fetch("/api/recipe/delete", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete recipe");
+        }
+        return response.json();
+      })
+      .then(() => {
+        loadData();
+      })
+      .catch((error) => {
+        console.error("Error deleting recipe:", error);
+      });
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-orange-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col items-center py-12 px-4">
@@ -37,7 +53,11 @@ export default function Recipes() {
       </div>
       <ul className="w-full max-w-2xl space-y-8">
         {recipes.map((recipe, index) => (
-          <RecipeCard key={index} recipe={recipe} />
+          <RecipeCard
+            onClick={(id) => deleteRecipe(id)}
+            key={index}
+            recipe={recipe}
+          />
         ))}
       </ul>
     </main>

@@ -5,6 +5,7 @@ import RecipeCard from "@/components/RecipeCard";
 
 export default function Recipes() {
   const [recipes, setRecipes] = useState([]);
+  const [editRecipe, setEditRecipe] = useState(null);
   useEffect(() => {
     loadData();
   }, []);
@@ -13,12 +14,25 @@ export default function Recipes() {
       .then((response) => response.json())
       .then((data) => setRecipes(data));
   };
+
   let saveData = async (data) => {
-    await fetch("/api/recipe/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    if (editRecipe.id) {
+      data.id = editRecipe.id;
+      await fetch("/api/recipe/edit", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      setEditRecipe(null);
+      loadData();
+      return;
+    } else {
+      await fetch("/api/recipe/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    }
     loadData();
   };
 
@@ -49,12 +63,15 @@ export default function Recipes() {
         🍰 Recipe Collection
       </h1>
       <div className="w-auto  max-w-2xl bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-10 border border-orange-200 dark:border-gray-700">
-        <RecipeForm onSubmit={saveData} />
+        <RecipeForm onEditData={editRecipe} onSubmit={saveData} />
       </div>
       <ul className="w-full max-w-2xl space-y-8">
         {recipes.map((recipe, index) => (
           <RecipeCard
-            onClick={(id) => deleteRecipe(id)}
+            onDelete={(id) => deleteRecipe(id)}
+            onEdit={(recipe) => {
+              setEditRecipe(recipe);
+            }}
             key={index}
             recipe={recipe}
           />

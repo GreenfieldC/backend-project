@@ -1,4 +1,4 @@
-export default function RecipeCard({ onClick, recipe }) {
+export default function RecipeCard({ onEdit, onDelete, recipe }) {
   return (
     <li className="bg-orange-50 dark:bg-gray-900 rounded-lg shadow p-6 border border-orange-100 dark:border-gray-800">
       <div className="flex justify-between items-center mb-4">
@@ -9,7 +9,13 @@ export default function RecipeCard({ onClick, recipe }) {
           {recipe.name}
         </h2>
         <button
-          onClick={() => onClick(recipe.id)}
+          onClick={() => onEdit(recipe)}
+          className=" h-8 flex items-center bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded p-2 px-6 font-medium shadow hover:from-purple-700 hover:to-blue-600 transition-colors duration-300"
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => onDelete(recipe.id)}
           className=" h-8 flex items-center bg-gradient-to-r from-purple-600 to-blue-500 text-white rounded p-2 px-6 font-medium shadow hover:from-purple-700 hover:to-blue-600 transition-colors duration-300"
         >
           Delete

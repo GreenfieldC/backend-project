@@ -1,11 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function RecipeForm({ onSubmit }) {
-  const [ingredientAmount, setIngredientAmount] = useState(1);
+export default function RecipeForm({ onEditData, onSubmit }) {
+  const [name, setName] = useState("");
+  const [steps, setSteps] = useState("");
+  const isEdit = !!onEditData;
+  const [ingredientAmount, setIngredientAmount] = useState([
+    { name: "", amount: "", units: "" },
+  ]);
+
+  useEffect(() => {
+    if (onEditData) {
+      setName(onEditData.name || "");
+      setSteps(
+        Array.isArray(onEditData.steps)
+          ? onEditData.steps
+              .map((step) =>
+                typeof step === "string" ? step : step.description
+              )
+              .join("\n")
+          : ""
+      );
+      setIngredientAmount(
+        onEditData.ingredients?.length
+          ? onEditData.ingredients.map((ingredient) => ({
+              name: ingredient.name || "",
+              amount: ingredient.amount || "",
+              units: ingredient.units || "",
+            }))
+          : [{ name: "", amount: "", units: "" }]
+      );
+    } else {
+      setName("");
+      setSteps("");
+      setIngredientAmount([{ name: "", amount: "", units: "" }]);
+    }
+  }, [onEditData]);
+
+  function handleIngredientChange(index, field, value) {
+    setIngredientAmount((prev) =>
+      prev.map((ingredient, i) =>
+        i === index ? { ...ingredient, [field]: value } : ingredient
+      )
+    );
+  }
+
+  function handleIngredientAdd() {
+    setIngredientAmount([
+      ...ingredientAmount,
+      { name: "", amount: "", units: "" },
+    ]);
+  }
+
   const submitRecipe = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    console.log(Object.fromEntries(formData));
     onSubmit({
       name: formData.get("name"),
       steps: formData.get("steps")
@@ -17,7 +65,11 @@ export default function RecipeForm({ onSubmit }) {
         units: formData.get(`units-${index}`),
       })),
     });
-    event.target.reset();
+    if (!isEdit) {
+      setName("");
+      setSteps("");
+      setIngredientAmount([{ name: "", amount: "", units: "" }]);
+    }
   };
   return (
     <form onSubmit={submitRecipe} className="space-y-6 w-full">
@@ -28,6 +80,8 @@ export default function RecipeForm({ onSubmit }) {
         <input
           id="name"
           name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           placeholder="Banana Bread"
           className="sm:col-span-3 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
         />
@@ -39,6 +93,8 @@ export default function RecipeForm({ onSubmit }) {
         <textarea
           id="steps"
           name="steps"
+          value={steps}
+          onChange={(e) => setSteps(e.target.value)}
           placeholder="1. Eat banana bread"
           className="sm:col-span-3 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300 min-h-[60px]"
         ></textarea>
@@ -58,6 +114,10 @@ export default function RecipeForm({ onSubmit }) {
             <input
               id={`name-${index}`}
               name={`name-${index}`}
+              value={ingredientAmount[index].name}
+              onChange={(e) =>
+                handleIngredientChange(index, "name", e.target.value)
+              }
               placeholder="Bananas"
               className="sm:col-span-2 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
             />
@@ -73,6 +133,10 @@ export default function RecipeForm({ onSubmit }) {
               id={`amount-${index}`}
               type="number"
               name={`amount-${index}`}
+              value={ingredientAmount[index].amount}
+              onChange={(e) =>
+                handleIngredientChange(index, "amount", e.target.value)
+              }
               placeholder="6"
               className="sm:col-span-1 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
             />
@@ -87,6 +151,10 @@ export default function RecipeForm({ onSubmit }) {
             <input
               id={`units-${index}`}
               name={`units-${index}`}
+              value={ingredientAmount[index].units}
+              onChange={(e) =>
+                handleIngredientChange(index, "units", e.target.value)
+              }
               placeholder="bunches"
               className="sm:col-span-1 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300"
             />
@@ -97,14 +165,14 @@ export default function RecipeForm({ onSubmit }) {
         <button
           type="button"
           className="mr-4 group underline rounded-lg border border-transparent px-5 py-2 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          onClick={() => setIngredientAmount((amount) => amount + 1)}
+          onClick={handleIngredientAdd}
         >
           Add Ingredient
         </button>
         <input
           className="group underline rounded-lg border border-transparent px-5 py-2 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30 cursor-pointer"
           type="submit"
-          value="Save Recipe"
+          value={isEdit ? "Save Edit Recipe" : "Save Recipe"}
         />
       </div>
     </form>

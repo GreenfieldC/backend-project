@@ -5,7 +5,7 @@ import RecipeCard from "@/components/RecipeCard";
 
 export default function Recipes() {
   const [recipes, setRecipes] = useState([]);
-  const [editRecipe, setEditRecipe] = useState(null);
+  const [editRecipe, setEditRecipe] = useState([]);
   useEffect(() => {
     loadData();
   }, []);

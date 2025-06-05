@@ -5,6 +5,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Project Overview
 
 This app allows users to create, edit, and delete recipes. It is built with Next.js and uses Prisma as the ORM for database access. The main features include:
+
 - Recipe CRUD (Create, Read, Update, Delete)
 - Modern UI with Tailwind CSS
 - API routes for recipe management

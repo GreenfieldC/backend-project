@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function RecipeForm({ onEditData, onSubmit }) {
   const [name, setName] = useState("");
   const [steps, setSteps] = useState("");
-  const isEdit = !!onEditData;
+  const isEdit = onEditData !== null && Object.keys(onEditData).length > 0;
   const [ingredientAmount, setIngredientAmount] = useState([
     { name: "", amount: "", units: "" },
   ]);
@@ -59,7 +59,7 @@ export default function RecipeForm({ onEditData, onSubmit }) {
       steps: formData.get("steps")
         ? formData.get("steps").split("\n").filter(Boolean)
         : [],
-      ingredients: [...Array(ingredientAmount).keys()].map((index) => ({
+      ingredients: ingredientAmount.map((ingredient,index) => ({
         name: formData.get(`name-${index}`),
         amount: parseFloat(formData.get(`amount-${index}`)),
         units: formData.get(`units-${index}`),
@@ -99,7 +99,7 @@ export default function RecipeForm({ onEditData, onSubmit }) {
           className="sm:col-span-3 w-full text-black rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-300 min-h-[60px]"
         ></textarea>
       </div>
-      {[...Array(ingredientAmount).keys()].map((index) => (
+      {ingredientAmount.map((ingredient,index) => (
         <fieldset
           className="grid col-span-2 sm:col-span-2 justify-between gap-4 items-center mb-2 border border-orange-100 dark:border-gray-700 rounded p-4 w-full"
           key={index}
@@ -114,7 +114,7 @@ export default function RecipeForm({ onEditData, onSubmit }) {
             <input
               id={`name-${index}`}
               name={`name-${index}`}
-              value={ingredientAmount[index].name}
+              value={ingredient.name}
               onChange={(e) =>
                 handleIngredientChange(index, "name", e.target.value)
               }
@@ -133,7 +133,7 @@ export default function RecipeForm({ onEditData, onSubmit }) {
               id={`amount-${index}`}
               type="number"
               name={`amount-${index}`}
-              value={ingredientAmount[index].amount}
+              value={ingredient.amount}
               onChange={(e) =>
                 handleIngredientChange(index, "amount", e.target.value)
               }
@@ -151,7 +151,7 @@ export default function RecipeForm({ onEditData, onSubmit }) {
             <input
               id={`units-${index}`}
               name={`units-${index}`}
-              value={ingredientAmount[index].units}
+              value={ingredient.units}
               onChange={(e) =>
                 handleIngredientChange(index, "units", e.target.value)
               }

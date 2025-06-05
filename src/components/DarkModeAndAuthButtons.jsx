@@ -1,22 +1,28 @@
-"use client";
-import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+'use client';
+import { useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function DarkModeAndAuthButtons() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/");
+    if (status === 'unauthenticated') {
+      router.push('/');
     }
   }, [status, router]);
 
   const toggleDarkMode = () => {
-    const isDark = document.documentElement.classList.toggle("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    const isDark =
+      document.documentElement.classList.toggle(
+        'dark'
+      );
+    localStorage.setItem(
+      'theme',
+      isDark ? 'dark' : 'light'
+    );
   };
   return (
     <>

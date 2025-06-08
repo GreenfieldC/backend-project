@@ -1,7 +1,7 @@
-import NextAuth from "next-auth";
-import GitHubProvider from "next-auth/providers/github";
-import { PrismaClient } from "@prisma/client";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import NextAuth from 'next-auth';
+import GitHubProvider from 'next-auth/providers/github';
+import { PrismaClient } from '@prisma/client';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 const prisma = new PrismaClient();
 
 export const authOptions = {
@@ -9,29 +9,30 @@ export const authOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
+      clientSecret: process.env.GITHUB_SECRET
+    })
   ],
   callbacks: {
     async signIn({ user, account }) {
-      const existingUser = await prisma.user.findUnique({
-        where: { email: user.email },
-      });
+      const existingUser =
+        await prisma.user.findUnique({
+          where: { email: user.email }
+        });
 
       if (
         existingUser &&
-        account?.provider === "credentials" &&
-        account?.type === "register"
+        account?.provider === 'credentials' &&
+        account?.type === 'register'
       ) {
-        return "/login";
+        return '/login';
       }
 
       if (
         !existingUser &&
-        account?.provider === "credentials" &&
-        account?.type === "login"
+        account?.provider === 'credentials' &&
+        account?.type === 'login'
       ) {
-        return "/register";
+        return '/register';
       }
       return true;
     },
@@ -42,10 +43,11 @@ export const authOptions = {
       return token;
     },
     async session({ session, token, user }) {
-      session.accessToken = token?.accessToken ?? null;
+      session.accessToken =
+        token?.accessToken ?? null;
       return session;
-    },
-  },
+    }
+  }
 };
 
 const handler = NextAuth(authOptions);

@@ -2,6 +2,14 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and integrated with [Prisma](https://www.prisma.io/) as the ORM for database access.
 
+## Project Overview
+
+This app allows users to create, edit, and delete recipes. It is built with Next.js and uses Prisma as the ORM for database access. The main features include:
+
+- Recipe CRUD (Create, Read, Update, Delete)
+- Modern UI with Tailwind CSS
+- API routes for recipe management
+
 ## Getting Started
 
 ### 1. Install dependencies
@@ -49,11 +57,47 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Google Fonts.
 
+## Environment Variables
+
+Copy `.env.example` to `.env` and adjust as needed:
+
+```env
+DATABASE_URL="file:./dev.db"
+# Add other variables as needed (e.g. NEXTAUTH_SECRET)
+```
+
+## API Endpoints
+
+- `GET /api/recipe/load` – Load all recipes
+- `POST /api/recipe/add` – Add a new recipe
+- `PUT /api/recipe/edit` – Edit an existing recipe
+- `DELETE /api/recipe/delete` – Delete a recipe
+
 ## Prisma Commands (Quick Reference)
 
 - `npx prisma migrate dev` – Run migrations and update the database
 - `npx prisma generate` – Generate Prisma Client (usually done automatically)
 - `npx prisma studio` – Visualize your database in the browser
+
+- Run `npx prisma generate` if you change the Prisma schema manually.
+- Run `npx prisma migrate dev` to apply new migrations.
+
+## Testing
+
+Currently, no automated tests are included. If you add tests, run them with:
+
+```bash
+npm test
+```
+
+## Coding Guidelines
+
+- Use Prettier and ESLint for code formatting and linting.
+- Follow the existing file and folder structure.
+
+## Contributing
+
+Feel free to open issues or submit pull requests!
 
 ## Learn More
 

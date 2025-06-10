@@ -1,20 +1,33 @@
-"use client";
-import { SessionProvider } from "next-auth/react";
-import { useEffect } from "react";
-import DarkModeAndAuthButtons from "./DarkModeAndAuthButtons";
+'use client';
+import { SessionProvider } from 'next-auth/react';
+import { useEffect } from 'react';
+import DarkModeAndAuthButtons from './DarkModeAndAuthButtons';
 
-export default function App({ session, children }) {
+export default function App({
+  session,
+  children
+}) {
   // Dark Mode Toggle
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const dark = localStorage.getItem("theme") === "dark";
-      document.documentElement.classList.toggle("dark", dark);
+    if (typeof window !== 'undefined') {
+      const dark =
+        localStorage.getItem('theme') === 'dark';
+      document.documentElement.classList.toggle(
+        'dark',
+        dark
+      );
     }
   }, []);
 
   const toggleDarkMode = () => {
-    const isDark = document.documentElement.classList.toggle("dark");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
+    const isDark =
+      document.documentElement.classList.toggle(
+        'dark'
+      );
+    localStorage.setItem(
+      'theme',
+      isDark ? 'dark' : 'light'
+    );
   };
 
   return (

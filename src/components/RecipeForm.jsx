@@ -80,20 +80,24 @@ export default function RecipeForm({
             .split('\n')
             .filter(Boolean)
         : [],
-      ingredients: ingredientAmount.filter(
-        (ingredient, index) =>
-          formData.get(`name-${index}`)?.trim() ||
-          formData.get(`amount-${index}`)?.trim() ||
-          formData.get(`units-${index}`)?.trim()
-      ).map(
-        (ingredient, index) => ({
+      ingredients: ingredientAmount
+        .filter(
+          (ingredient, index) =>
+            formData
+              .get(`name-${index}`)
+              ?.trim() ||
+            formData
+              .get(`amount-${index}`)
+              ?.trim() ||
+            formData.get(`units-${index}`)?.trim()
+        )
+        .map((ingredient, index) => ({
           name: formData.get(`name-${index}`),
           amount: parseFloat(
             formData.get(`amount-${index}`)
           ),
           units: formData.get(`units-${index}`)
-        })
-      )
+        }))
     });
     if (!isEdit) {
       setName('');
